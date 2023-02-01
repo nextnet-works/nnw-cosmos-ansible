@@ -1,0 +1,57 @@
+---
+all:
+  vars:
+    #TODO: decide how and where to declare toml files
+    minimum_gas_amount: 0.0025
+    chain_denom: "unoria"
+    app_toml_file: "/home/labuser1/ansible-playbook/copyfiles/app.toml"
+    client_toml_file: "/home/labuser1/ansible-playbook/copyfiles/client.toml"
+    config_toml_file: "/home/labuser1/ansible-playbook/copyfiles/config.toml"
+    genesis_json_url: "https://raw.githubusercontent.com/cdbo/cdnode/master/genesis.json"
+    node_user: cdnode
+    use_cosmovisor: true
+    #general settings
+    snapshot_rpc: https://chaos-rpc.cryptodollar.dev:443
+    chain_folder_name: ".cdnode"
+    chain_binary_name: cdnoded
+    chain_repository: https://github.com/cdbo/cdnode.git
+    chain_home_clear: false
+    node_unsafe_reset: false
+    node_service_name: "cdnoded"
+    chain_denom: unoria
+    chain_version: v0.7.3
+    # default configuration
+    cosmovisor_service_name: "cosmovisor"
+    cosmovisor_skip_backup: false
+    chain_id: "oasis-2"
+    # go configuration
+    go_arch: "{{binary_arch_map[ansible_architecture]}}"
+    go_version: 1.19
+    binary_arch_map:
+      aarch64: "linux-arm64"
+      x86_64: "linux-amd64"
+
+  children:
+    node:
+      hosts: "{{ target }}"
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

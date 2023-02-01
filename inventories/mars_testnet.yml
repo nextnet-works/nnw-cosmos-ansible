@@ -1,0 +1,34 @@
+---
+all:
+  vars:
+    #TODO: decide how and where to declare toml files & add mars one's
+    #app_toml_file: "/home/labuser1/ansible-playbook/copyfiles/mars_app.toml"
+    #client_toml_file: "/home/labuser1/ansible-playbook/copyfiles/mars_client.toml"
+    #config_toml_file: "/home/labuser1/ansible-playbook/copyfiles/mars_config.toml"
+    genesis_json_url: "https://raw.githubusercontent.com/mars-protocol/networks/main/ares-1/genesis.json"
+    persistent_peers: "14ba3b19424301a6bb58c27663a0323a81866d5d@134.122.82.186:26656,f3dceab155a74772595ae33ee6b72165c31fd888@62.171.166.106:26656,e12bc490096d1b5f4026980f05a118c82e81df2a@85.17.6.142:26656,7342199e80976b052d8506cc5a56d1f9a1cbb486@65.21.89.54:26653,5c2a752c9b1952dbed075c56c600c3a79b58c395@mars.testnet.peer.autostake.net:27056,0669f1d76ae4f91eaf11a0327c71a0ce909df2cd@134.122.82.186:26656,3084613c19f2a9fc7d46528702fb38a6c7eb5f7f@164.92.249.191:26656"
+    chain_folder_name: .mars
+    snapshot_rpc: "https://rpc-1.mars.nodes.guru"
+    node_user: mars
+    use_cosmovisor: true
+    #general settings
+    chain_binary_name: mars
+    chain_repository: "https://github.com/mars-protocol/hub"
+    node_service_name: "marsd"
+    chain_denom: umars
+    chain_version: v1.0.0-rc7
+    # default configuration
+    cosmovisor_service_name: "cosmovisor"
+    cosmovisor_skip_backup: false
+    chain_id: "ares-1"
+    # go configuration
+    go_arch: "{{binary_arch_map[ansible_architecture]}}"
+    go_version: 1.19
+    binary_arch_map:
+      aarch64: "linux-arm64"
+      x86_64: "linux-amd64"
+
+  children:
+    node:
+      hosts: "{{ target }}"
+

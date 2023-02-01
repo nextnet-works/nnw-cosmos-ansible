@@ -1,0 +1,24 @@
+---
+- name: Install system required packages
+  package:
+    name:
+      - jq
+      - acl
+      - python3
+      - wget
+      - git
+      - curl
+      - gcc
+      - findutils
+      - make
+      - rsync
+      - tar
+      - pip
+    state: present
+
+# TODO: move this to the user, does'nt need to be with root
+- name: Set up pip dependencies
+  pip:
+    name:
+      - toml
+      - github.py

@@ -1,0 +1,15 @@
+---
+- name: Create the folder for the upgrade
+  file:
+    path: "{{ chain_home }}/cosmovisor/upgrades/{{ upgrade_folder_name }}/bin"
+    state: directory
+    recurse: true
+    owner: "{{ node_user }}"
+    group: "{{ node_user }}"
+
+- name: Fetch the binary from a release to the right folder
+  when: upgraded_binary_url is defined
+  get_url:
+    url: "{{ upgrade_binary_url }}"
+    dest: "{{ chain_home }}/cosmovisor/upgrades/{{ upgrade_folder_name}}/bin/"
+    mode: "0777"

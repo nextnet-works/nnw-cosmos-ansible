@@ -1,0 +1,7 @@
+---
+- name: Set up base configuration for the node user
+  import_tasks: base.yml
+
+- name: Configure network files - toml, json, etc
+  import_tasks: config_public.yml
+

@@ -1,0 +1,8 @@
+---
+- name: Configure and start cosmovisor service
+  when: use_cosmovisor
+  import_tasks: cosmovisor_service.yml
+
+- name: Configure and start chain service 
+  when: not use_cosmovisor
+  import_tasks: chain_service.yml

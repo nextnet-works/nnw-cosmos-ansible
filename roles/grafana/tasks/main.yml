@@ -1,0 +1,6 @@
+---
+- name: Run exporter script
+  script: node_exporter.sh
+
+- name: Run grafana agent script
+  script: grafana_agent.sh

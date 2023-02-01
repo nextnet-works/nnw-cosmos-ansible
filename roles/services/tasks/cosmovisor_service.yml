@@ -1,0 +1,27 @@
+---
+- name: configure systemd service for cosmovisor
+  when: use_cosmovisor
+  template:
+    src: cosmovisor.service.j2
+    dest: "/etc/systemd/system/{{cosmovisor_service_name}}.service"
+    force: false
+
+- name: enable cosmovisor systemd service
+  when: use_cosmovisor
+  systemd:
+    daemon_reload: true
+    state: stopped
+    enabled: true
+    name: "{{ cosmovisor_service_name }}"
+
+- name: start cosmovisor systemd service
+  when: use_cosmovisor
+  systemd:
+    daemon_reload: true
+    state: restarted
+    enabled: true
+    name: "{{ cosmovisor_service_name }}"
+  tags:
+    - chain_start
+    - chain_restart
+

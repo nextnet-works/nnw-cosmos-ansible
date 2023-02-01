@@ -1,0 +1,141 @@
+---
+
+- name: Stop existing chain systemd service
+  # Check for both `SERVICE_NAME` and `SERVICE_NAME.service`
+  when: >
+    not use_cosmovisor and (
+    (node_service_name in ansible_facts.services) or
+    ((node_service_name + '.service') in ansible_facts.services))
+  systemd:
+    state: stopped
+    name: "{{node_service_name}}"
+  become_user: root
+  become: true
+  tags:
+    - chain_stop
+    - chain_restart
+
+- name: Stop existing cosmovisor systemd service
+  when: >
+    use_cosmovisor and (
+    (cosmovisor_service_name in ansible_facts.services) or
+    ((cosmovisor_service_name + '.service') in ansible_facts.services))
+  systemd:
+    state: stopped
+    name: "{{cosmovisor_service_name}}"
+  become_user: root
+  become: true
+  tags:
+    - chain_stop
+    - chain_restart
+
+- name: Prepare go folder
+  file:
+    path: "{{ node_user_home }}/go/bin"
+    state: directory
+    recurse: true
+    owner: "{{ node_user }}"
+    group: "{{ node_user }}"
+
+# Chain installation
+- name: Clone chain repo
+  git: 
+    repo: "{{ chain_repository }}"
+    dest: "{{ chain_repo_dir }}"
+    version: "{{ chain_version }}"
+
+- name: Install chain
+  shell: |
+    PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+    make install
+  args:
+    chdir: "{{ chain_repo_dir }}"
+  ignore_errors: true
+
+- name: Check if chain home folder exists
+  stat:
+    path: "{{chain_home}}"
+  register: chain_home_exists
+
+- name: Init chain
+  when: not chain_home_exists.stat.exists
+  shell: |
+    cd $HOME
+    {{chain_bin}} init {{ chain_moniker }} --home {{chain_home}} --chain-id {{chain_id}}
+
+- name: Add chain bin from go/bin to .bashrc PATH
+  when: not use_cosmovisor
+  blockinfile:
+    dest: '{{ node_user_home }}/.bashrc'
+    block: |
+      export PATH="$PATH:{{ node_user_home }}/go/bin"
+    marker: '# {mark} ANSIBLE MANAGED BLOCK - CHAIN PATH'
+    insertbefore: EOF
+    create: yes
+
+# cosmovisor
+- name: Check cosmovisor version
+  shell: |
+    PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+    export DAEMON_HOME={{ chain_home }}
+    export DAEMON_NAME={{ chain_binary_name }}
+    cosmovisor version
+  register: cosmovisor_current
+  ignore_errors: true
+
+- name: Debug output
+  debug:
+    var:  cosmovisor_current
+
+
+- name: clone and install cosmovisor
+  when: not cosmovisor_version in cosmovisor_current.stdout
+  shell: |
+    PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+    go install {{cosmovisor_repository}}@{{cosmovisor_version}}
+
+## Configure cosmovisor 
+# TODO: consider changing to cosmovisor init <path_to_binary>
+- name: Prepare cosmovisor folder
+  file:
+    path: '{{ cosmovisor_home }}/genesis/bin'
+    state: directory
+    owner: '{{node_user}}'
+    group: '{{node_user}}'
+
+- name: Add upgrade folder for cosmovisor
+  file:
+    path: "{{ cosmovisor_home }}/upgrades"
+    state: directory
+    owner: "{{ node_user}}"
+    group: "{{ node_user }}"
+
+
+- name: Copy chain bin for cosmovisor genesis
+  copy:
+    remote_src: true
+    src: '{{ chain_bin }}'
+    dest: '{{ cosmovisor_home }}/genesis/bin/{{chain_binary_name}}'
+    owner: '{{node_user}}'
+    group: '{{node_user}}'
+    mode: '0755'
+
+- name: Add chain bin from cosmovisor to .bashrc PATH
+  blockinfile:
+    dest: '{{ node_user_home }}/.bashrc'
+    block: |
+      export PATH="$PATH:{{ cosmovisor_home }}/current/bin"
+    marker: '# {mark} ANSIBLE MANAGED BLOCK - CHAIN PATH'
+    insertbefore: EOF
+    create: yes
+
+- name: Add cosmovisor parmeters to .bashrc file for easy usage
+  blockinfile:
+    dest: "{{ node_user_home }}/.bashrc"
+    block: |
+      export DAEMON_NAME={{chain_binary_name}}
+      export DAEMON_HOME={{ chain_home }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - COSMOVISOR CONFIG VAR"
+    insertbefore: EOF
+    create: yes
+

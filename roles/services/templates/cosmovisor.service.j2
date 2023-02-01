@@ -1,0 +1,20 @@
+[Unit]
+Description=cosmovisor
+After=network-online.target
+
+[Service]
+Environment="DAEMON_NAME={{chain_binary_name}}"
+Environment="DAEMON_HOME={{ chain_home }}"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
+Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
+Environment="DAEMON_LOG_BUFFER_SIZE=512"
+User={{node_user}}
+ExecStart={{ cosmovisor_bin }} run start --home {{ chain_home }}
+StandardOutput=append:/var/log/cosmovisor.log
+StandardError=append:/var/log/cosmovisor.log
+Restart=always
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

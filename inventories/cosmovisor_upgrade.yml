@@ -1,0 +1,11 @@
+---
+all:
+  vars:
+    # Variables for perparing for a chain upgrade
+    upgrade_binary_url: ""
+    upgrade_folder_name: ""
+
+  children:
+    node:
+      hosts: "{{ target }}"
+                                
