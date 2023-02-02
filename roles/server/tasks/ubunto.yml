@@ -2,7 +2,6 @@
 - name: Install system required packages
   package:
     name:
-      - jq
       - acl
       - python3
       - wget
@@ -13,12 +12,20 @@
       - make
       - rsync
       - tar
-      - pip
     state: present
 
+- name: Upgrade the system
+  apt:
+    update_cache: true
+    upgrade: dist
+  register: apt_cache
+  retries: 50
+
+  until: apt_cache is success
 # TODO: move this to the user, does'nt need to be with root
-- name: Set up pip dependencies
-  pip:
-    name:
-      - toml
-      - github.py
+- name: Install jq on Ubuntu
+  apt:
+    pkg:
+      - jq
+
+
