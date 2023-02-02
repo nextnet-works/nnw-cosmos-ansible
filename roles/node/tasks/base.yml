@@ -92,33 +92,26 @@
   when: not cosmovisor_version in cosmovisor_current.stdout
   shell: |
     PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-    go install {{cosmovisor_repository}}@{{cosmovisor_version}}
-
-## Configure cosmovisor 
-# TODO: consider changing to cosmovisor init <path_to_binary>
-- name: Prepare cosmovisor folder
-  file:
-    path: '{{ cosmovisor_home }}/genesis/bin'
-    state: directory
-    owner: '{{node_user}}'
-    group: '{{node_user}}'
-
-- name: Add upgrade folder for cosmovisor
-  file:
-    path: "{{ cosmovisor_home }}/upgrades"
-    state: directory
-    owner: "{{ node_user}}"
-    group: "{{ node_user }}"
+    go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
 
 
-- name: Copy chain bin for cosmovisor genesis
-  copy:
-    remote_src: true
-    src: '{{ chain_bin }}'
-    dest: '{{ cosmovisor_home }}/genesis/bin/{{chain_binary_name}}'
-    owner: '{{node_user}}'
-    group: '{{node_user}}'
-    mode: '0755'
+- name: Add cosmovisor parmeters to .bashrc file for easy usage
+  blockinfile:
+    dest: "{{ node_user_home }}/.bashrc"
+    block: |
+      export DAEMON_NAME={{chain_binary_name}}
+      export DAEMON_HOME={{ chain_home }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - COSMOVISOR CONFIG VAR"
+    insertbefore: EOF
+    create: yes
+
+- name: Init cosmovisor folders
+  shell: |
+    export DAEMON_NAME={{chain_binary_name}}
+    export DAEMON_HOME={{ chain_home }}
+    PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+    $HOME/go/bin/cosmovisor init $HOME/go/bin/{{ chain_binary_name }}
+
 
 - name: Add chain bin from cosmovisor to .bashrc PATH
   blockinfile:
