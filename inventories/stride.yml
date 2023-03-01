@@ -1,0 +1,35 @@
+---
+all:
+  vars:
+    #TODO: decide how and where to declare toml files
+    minimum_gas_amount: 0.001
+    persistent_peers: "222b5f1f8f8b4933c1913818ab2b7379c282b4e2@65.108.75.107:11656"
+    chain_denom: "ustrd"
+    genesis_json_url: "https://raw.githubusercontent.com/Stride-Labs/testnet/main/mainnet/genesis.json"
+    node_user: stride
+    use_cosmovisor: true
+    #general settings
+    snapshot_rpc: https://stride-rpc.polkachu.com:443
+    chain_folder_name: ".stride"
+    chain_binary_name: strided
+    chain_repository: https://github.com/Stride-Labs/stride.git
+    chain_home_clear: false
+    node_unsafe_reset: false
+    node_service_name: "strided"
+    chain_denom: 
+    chain_version: v5.1.1
+    # default configuration
+    cosmovisor_service_name: "cosmovisor"
+    cosmovisor_skip_backup: false
+    chain_id: "stride-1"
+    # go configuration
+    go_arch: "{{binary_arch_map[ansible_architecture]}}"
+    go_version: 1.19
+    binary_arch_map:
+      aarch64: "linux-arm64"
+      x86_64: "linux-amd64"
+
+  children:
+    node:
+      hosts: "{{ target }}"
+

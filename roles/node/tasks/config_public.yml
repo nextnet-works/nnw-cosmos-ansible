@@ -37,7 +37,7 @@
 
 - name: Set up minimum-gas-price
   lineinfile:
-    path: "{{chain_home }}/config/app.toml"
+    path: "{{chain_home }}/config/config.toml"
     regexp: '^minimum_gas_prices = '
     line: minimum_gas_prices = "{{ minimum_gas_amount }}{{ chain_denom }}"
       
@@ -46,6 +46,12 @@
     path: "{{ chain_home }}/config/config.toml"
     regexp: '^moniker = '
     line: moniker= "{{ chain_moniker }}"
+
+- name: Set persistent peers
+  lineinfile:
+    path: "{{ chain_home }}/config/config.toml"
+    regexp: '^persistent_peers = '
+    line: persistent_peers = "{{ persistent_peers }}"
 
 ## TODO: Add rpc end point variable to the statesync script (currently set as a constant)
 - name: Set statesync variables

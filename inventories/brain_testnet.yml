@@ -3,28 +3,28 @@ all:
   vars:
     #TODO: decide how and where to declare toml files
     minimum_gas_amount: 0.0025
-    chain_denom: "unoria"
+    persistent_peers: "fd77311164a71427306a8190e981ee8bb901cfb3@68.183.197.66:26656"
+    chain_denom: "ubrain"
     app_toml_file: "/home/labuser1/ansible-playbook/copyfiles/app.toml"
     client_toml_file: "/home/labuser1/ansible-playbook/copyfiles/client.toml"
     config_toml_file: "/home/labuser1/ansible-playbook/copyfiles/config.toml"
-    genesis_json_url: "https://raw.githubusercontent.com/cdbo/cdnode/master/genesis.json"
-    persistent_peers: ""
-    node_user: cdnode
+    genesis_json_url: "https://raw.githubusercontent.com/cdbo/brain/master/genesis.json"
+    node_user: brain
     use_cosmovisor: true
     #general settings
-    snapshot_rpc: https://chaos-rpc.cryptodollar.dev:443
-    chain_folder_name: ".cdnode"
-    chain_binary_name: cdnoded
-    chain_repository: https://github.com/cdbo/cdnode.git
+    snapshot_rpc: https://neuron-rpc.cryptodollar.dev:443
+    chain_folder_name: ".brain"
+    chain_binary_name: braind
+    chain_repository: https://github.com/cdbo/brain.git
     chain_home_clear: false
     node_unsafe_reset: false
-    node_service_name: "cdnoded"
-    chain_denom: unoria
-    chain_version: v0.7.3
+    node_service_name: "braind"
+    chain_denom: ubrain
+    chain_version: v0.1.0
     # default configuration
     cosmovisor_service_name: "cosmovisor"
     cosmovisor_skip_backup: false
-    chain_id: "oasis-2"
+    chain_id: "brain-t1"
     # go configuration
     go_arch: "{{binary_arch_map[ansible_architecture]}}"
     go_version: 1.19
@@ -35,24 +35,4 @@ all:
   children:
     node:
       hosts: "{{ target }}"
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
