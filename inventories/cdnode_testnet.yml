@@ -4,11 +4,8 @@ all:
     #TODO: decide how and where to declare toml files
     minimum_gas_amount: 0.0025
     chain_denom: "unoria"
-    app_toml_file: "/home/labuser1/ansible-playbook/copyfiles/app.toml"
-    client_toml_file: "/home/labuser1/ansible-playbook/copyfiles/client.toml"
-    config_toml_file: "/home/labuser1/ansible-playbook/copyfiles/config.toml"
     genesis_json_url: "https://raw.githubusercontent.com/cdbo/cdnode/master/genesis.json"
-    persistent_peers: ""
+    persistent_peers: "5dc187550a021298f88c3e5905c7dbdd790ff040@167.99.177.244:26656"
     node_user: cdnode
     use_cosmovisor: true
     #general settings
