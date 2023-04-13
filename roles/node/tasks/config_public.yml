@@ -31,4 +31,5 @@
 
 ## TODO: Add rpc end point variable to the statesync script (currently set as a constant)
 - name: Set statesync variables
+  when: state_sync_disable is undefined
   script: state_sync.sh {{ snapshot_rpc }} {{ chain_home }}
