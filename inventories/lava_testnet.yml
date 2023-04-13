@@ -2,7 +2,7 @@
 all:
   vars:
     #TODO: decide how and where to declare toml files
-    minimum_gas_amount: 0
+    minimum_gas_prices: "0ulava"
     persistent_peers: "3a445bfdbe2d0c8ee82461633aa3af31bc2b4dc0@prod-pnet-seed-node.lavanet.xyz:26656"
     chain_denom: "ulava"
     genesis_json_url: "https://raw.githubusercontent.com/lavanet/lava-config/main/testnet-1/genesis_json/genesis.json"

@@ -15,15 +15,6 @@
   import_tasks: centos.yml
 
 
-- name: Remove system go files
-  file:
-    state: absent
-    path: "{{ item }}"
-  loop:
-    - /usr/bin/go
-    - /usr/local/go
-    - /usr/lib/go
-
 - name: Check golang version
   shell: |
     PATH=$PATH:/usr/local/go/bin:$HOME/go/bin

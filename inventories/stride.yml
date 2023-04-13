@@ -2,7 +2,7 @@
 all:
   vars:
     #TODO: decide how and where to declare toml files
-    minimum_gas_amount: 0.001
+    minimum_gas_prices: "0.001ustrd"
     persistent_peers: "222b5f1f8f8b4933c1913818ab2b7379c282b4e2@65.108.75.107:11656"
     chain_denom: "ustrd"
     genesis_json_url: "https://raw.githubusercontent.com/Stride-Labs/testnet/main/mainnet/genesis.json"

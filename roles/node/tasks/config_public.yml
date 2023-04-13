@@ -1,27 +1,3 @@
-- name: copy app.toml
-  when: app_toml_file is defined
-  copy:
-    src: '{{app_toml_file}}'
-    dest: '{{chain_home}}/config/app.toml'
-    owner: '{{node_user}}'
-    group: '{{node_user}}'
-
-- name: copy client.toml
-  when: client_toml_file is defined
-  copy:
-    src: '{{client_toml_file}}'
-    dest: '{{chain_home}}/config/client.toml'
-    owner: '{{node_user}}'
-    group: '{{node_user}}'
-
-- name: copy config.toml
-  when: config_toml_file is defined
-  copy:
-    src: '{{config_toml_file}}'
-    dest: '{{chain_home}}/config/config.toml'
-    owner: '{{node_user}}'
-    group: '{{node_user}}'
-
 # get genesis.json file
 - name: Fetch genesis.json file from url
   when: genesis_json_url is defined
@@ -37,9 +13,9 @@
 
 - name: Set up minimum-gas-price
   lineinfile:
-    path: "{{chain_home }}/config/config.toml"
-    regexp: '^minimum_gas_prices = '
-    line: minimum_gas_prices = "{{ minimum_gas_amount }}{{ chain_denom }}"
+    path: "{{chain_home }}/config/app.toml"
+    regexp: '^minimum-gas-prices = '
+    line: minimum-gas-prices = "{{ minimum_gas_prices }}"
       
 - name: Set moniker for node
   lineinfile:
