@@ -4,20 +4,20 @@ all:
     #TODO: decide how and where to declare toml files
     minimum_gas_prices: "0.0025unoria,0.0025ucrd"
     chain_denom: "unoria"
-    genesis_json_url: "TBH"
-    persistent_peers: "TBH"
+    genesis_json_url: "https://github.com/noria-net/noria/blob/main/genesis.json"
+    persistent_peers: "c166422d24413f0661b006af29f7545890a9a1f0@54.173.208.94:26656"
     node_user: noria
     use_cosmovisor: true
     #general settings
-    snapshot_rpc: TBH
+    snapshot_rpc: https://archive-rpc.noria.nextnet.zone
     chain_folder_name: ".noria"
     chain_binary_name: noriad
-    chain_repository: TBH
+    chain_repository: https://github.com/noria-net/noria.git
     chain_home_clear: false
     node_unsafe_reset: false
     node_service_name: "noriad"
     chain_denom: unoria
-    chain_version: v1.0.0 (TBH)
+    chain_version: v1.0.0
     # default configuration
     cosmovisor_service_name: "cosmovisor"
     cosmovisor_skip_backup: false
