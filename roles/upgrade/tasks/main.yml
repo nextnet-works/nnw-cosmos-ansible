@@ -1,6 +1,6 @@
 ---
 - name: Create the folder for the upgrade
-  file:
+  ansible.builtin.file:
     path: "{{ chain_home }}/cosmovisor/upgrades/{{ upgrade_folder_name }}/bin"
     state: directory
     recurse: true
@@ -9,7 +9,7 @@
 
 - name: Fetch the binary from a release to the right folder
   when: upgraded_binary_url is defined
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ upgrade_binary_url }}"
-    dest: "{{ chain_home }}/cosmovisor/upgrades/{{ upgrade_folder_name}}/bin/"
+    dest: "{{ chain_home }}/cosmovisor/upgrades/{{ upgrade_folder_name }}/bin/"
     mode: "0777"
