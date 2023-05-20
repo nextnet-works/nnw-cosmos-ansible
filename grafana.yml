@@ -1,6 +1,6 @@
 ---
 # Configure a chain node
-- hosts: node
+- name: Install and configure grafana
+  hosts: node
   roles:
-    - {role: grafana , become: true }
-
+    - {role: grafana, become: true }
