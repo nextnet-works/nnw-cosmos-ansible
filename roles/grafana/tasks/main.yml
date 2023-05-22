@@ -1,6 +1,6 @@
 ---
 - name: Run exporter script
-  script: node_exporter.sh
+  ansible.builtin.script: node_exporter.sh
 
 - name: Run grafana agent script
-  script: grafana_agent.sh
+  ansible.builtin.script: grafana_agent.sh

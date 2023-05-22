@@ -1,14 +1,14 @@
 ---
 all:
   vars:
-    #TODO: decide how and where to declare toml files
+    # TODO: decide how and where to declare toml files
     minimum_gas_prices: "0.001ustrd"
     persistent_peers: "222b5f1f8f8b4933c1913818ab2b7379c282b4e2@65.108.75.107:11656"
     chain_denom: "ustrd"
     genesis_json_url: "https://raw.githubusercontent.com/Stride-Labs/testnet/main/mainnet/genesis.json"
     node_user: stride
     use_cosmovisor: true
-    #general settings
+    # general settings
     snapshot_rpc: https://stride-rpc.polkachu.com:443
     chain_folder_name: ".stride"
     chain_binary_name: strided
@@ -16,7 +16,6 @@ all:
     chain_home_clear: false
     node_unsafe_reset: false
     node_service_name: "strided"
-    chain_denom: 
     chain_version: v5.1.1
     # default configuration
     cosmovisor_service_name: "cosmovisor"
@@ -32,4 +31,3 @@ all:
   children:
     node:
       hosts: "{{ target }}"
-

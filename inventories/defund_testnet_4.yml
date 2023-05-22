@@ -1,14 +1,14 @@
 ---
 all:
   vars:
-    #TODO: decide how and where to declare toml files
+    # TODO: decide how and where to declare toml files
     minimum_gas_amount: 0.0025
     persistent_peers: "1b575f8fee0338c09f6540d3748927754d9c97cb@rpc.defund.ppnv.space:42656"
     chain_denom: "ufetf"
     genesis_json_url: "https://raw.githubusercontent.com/defund-labs/testnet/main/defund-private-4/genesis.json"
     node_user: defund
     use_cosmovisor: true
-    #general settings
+    # general settings
     snapshot_rpc: http://rpc.defund.ppnv.space:42657
     chain_folder_name: ".defund"
     chain_binary_name: defundd
@@ -16,7 +16,6 @@ all:
     chain_home_clear: false
     node_unsafe_reset: false
     node_service_name: "defundd"
-    chain_denom: ufetf
     chain_version: v0.2.4
     # default configuration
     cosmovisor_service_name: "cosmovisor"
@@ -32,4 +31,3 @@ all:
   children:
     node:
       hosts: "{{ target }}"
-
