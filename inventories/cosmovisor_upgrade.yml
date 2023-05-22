@@ -8,4 +8,3 @@ all:
   children:
     node:
       hosts: "{{ target }}"
-                                

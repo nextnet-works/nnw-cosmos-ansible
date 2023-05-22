@@ -1,14 +1,14 @@
 ---
 all:
   vars:
-    #TODO: decide how and where to declare toml files
+    # TODO: decide how and where to declare toml files
     minimum_gas_prices: "0ulava"
     persistent_peers: "3a445bfdbe2d0c8ee82461633aa3af31bc2b4dc0@prod-pnet-seed-node.lavanet.xyz:26656"
     chain_denom: "ulava"
     genesis_json_url: "https://raw.githubusercontent.com/lavanet/lava-config/main/testnet-1/genesis_json/genesis.json"
     node_user: lavad
     use_cosmovisor: true
-    #general settings
+    # general settings
     snapshot_rpc: https:\/\/rpc-1.lava.nodes.guru:443
     chain_folder_name: ".lava"
     chain_binary_name: lavad
@@ -16,7 +16,6 @@ all:
     chain_home_clear: false
     node_unsafe_reset: false
     node_service_name: "lavad"
-    chain_denom: 
     chain_version: v0.5.2
     # default configuration
     cosmovisor_service_name: "cosmovisor"
@@ -32,4 +31,3 @@ all:
   children:
     node:
       hosts: "{{ target }}"
-
