@@ -1,30 +1,30 @@
 # get genesis.json file
 - name: Fetch genesis.json file from url
   when: genesis_json_url is defined
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ genesis_json_url }}"
     dest: "{{ chain_home }}/config/genesis.json"
 
 - name: Enable prometeous
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ chain_home }}/config/config.toml"
     regexp: '^prometheus = '
     line: prometheus = true
 
 - name: Set up minimum-gas-price
-  lineinfile:
-    path: "{{chain_home }}/config/app.toml"
+  ansible.builtin.lineinfile:
+    path: "{{ chain_home }}/config/app.toml"
     regexp: '^minimum-gas-prices = '
     line: minimum-gas-prices = "{{ minimum_gas_prices }}"
-      
+
 - name: Set moniker for node
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ chain_home }}/config/config.toml"
     regexp: '^moniker = '
     line: moniker= "{{ chain_moniker }}"
 
 - name: Set persistent peers
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ chain_home }}/config/config.toml"
     regexp: '^persistent_peers = '
     line: persistent_peers = "{{ persistent_peers }}"
@@ -32,4 +32,4 @@
 ## TODO: Add rpc end point variable to the statesync script (currently set as a constant)
 - name: Set statesync variables
   when: state_sync_disable is undefined
-  script: state_sync.sh {{ snapshot_rpc }} {{ chain_home }}
+  ansible.builtin.script: state_sync.sh {{ snapshot_rpc }} {{ chain_home }}

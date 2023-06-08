@@ -1,14 +1,13 @@
 ---
-
 - name: Stop existing chain systemd service
   # Check for both `SERVICE_NAME` and `SERVICE_NAME.service`
   when: >
     not use_cosmovisor and (
     (node_service_name in ansible_facts.services) or
     ((node_service_name + '.service') in ansible_facts.services))
-  systemd:
+  ansible.builtin.systemd:
     state: stopped
-    name: "{{node_service_name}}"
+    name: "{{ node_service_name }}"
   become_user: root
   become: true
   tags:
@@ -20,9 +19,9 @@
     use_cosmovisor and (
     (cosmovisor_service_name in ansible_facts.services) or
     ((cosmovisor_service_name + '.service') in ansible_facts.services))
-  systemd:
+  ansible.builtin.systemd:
     state: stopped
-    name: "{{cosmovisor_service_name}}"
+    name: "{{ cosmovisor_service_name }}"
   become_user: root
   become: true
   tags:
@@ -30,7 +29,7 @@
     - chain_restart
 
 - name: Prepare go folder
-  file:
+  ansible.builtin.file:
     path: "{{ node_user_home }}/go/bin"
     state: directory
     recurse: true
@@ -39,13 +38,13 @@
 
 # Chain installation
 - name: Clone chain repo
-  git: 
+  ansible.builtin.git:
     repo: "{{ chain_repository }}"
     dest: "{{ chain_repo_dir }}"
     version: "{{ chain_version }}"
 
 - name: Install chain
-  shell: |
+  ansible.builtin.shell: |
     PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     make install
   args:
@@ -53,29 +52,29 @@
   ignore_errors: true
 
 - name: Check if chain home folder exists
-  stat:
-    path: "{{chain_home}}"
+  ansible.builtin.stat:
+    path: "{{ chain_home }}"
   register: chain_home_exists
 
 - name: Init chain
   when: not chain_home_exists.stat.exists
-  shell: |
+  ansible.builtin.shell: |
     cd $HOME
-    {{chain_bin}} init {{ chain_moniker }} --home {{chain_home}} --chain-id {{chain_id}}
+    {{ chain_bin }} init {{ chain_moniker }} --home {{ chain_home }} --chain-id {{ chain_id }}
 
 - name: Add chain bin from go/bin to .bashrc PATH
   when: not use_cosmovisor
-  blockinfile:
+  ansible.builtin.blockinfile:
     dest: '{{ node_user_home }}/.bashrc'
     block: |
       export PATH="$PATH:{{ node_user_home }}/go/bin"
     marker: '# {mark} ANSIBLE MANAGED BLOCK - CHAIN PATH'
     insertbefore: EOF
-    create: yes
+    create: true
 
 # cosmovisor
 - name: Check cosmovisor version
-  shell: |
+  ansible.builtin.shell: |
     PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     export DAEMON_HOME={{ chain_home }}
     export DAEMON_NAME={{ chain_binary_name }}
@@ -84,51 +83,47 @@
   ignore_errors: true
 
 - name: Debug output
-  debug:
-    var:  cosmovisor_current
+  ansible.builtin.debug:
+    var: cosmovisor_current
 
-
-- name: clone and install cosmovisor
+- name: Clone and install cosmovisor
   when: not cosmovisor_version in cosmovisor_current.stdout
-  shell: |
+  ansible.builtin.shell: |
     PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
 
-
 - name: Add cosmovisor parmeters to .bashrc file for easy usage
-  blockinfile:
+  ansible.builtin.blockinfile:
     dest: "{{ node_user_home }}/.bashrc"
     block: |
-      export DAEMON_NAME={{chain_binary_name}}
+      export DAEMON_NAME={{ chain_binary_name }}
       export DAEMON_HOME={{ chain_home }}
     marker: "# {mark} ANSIBLE MANAGED BLOCK - COSMOVISOR CONFIG VAR"
     insertbefore: EOF
-    create: yes
+    create: true
 
 - name: Init cosmovisor folders
-  shell: |
-    export DAEMON_NAME={{chain_binary_name}}
+  ansible.builtin.shell: |
+    export DAEMON_NAME={{ chain_binary_name }}
     export DAEMON_HOME={{ chain_home }}
     PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     $HOME/go/bin/cosmovisor init $HOME/go/bin/{{ chain_binary_name }}
 
-
 - name: Add chain bin from cosmovisor to .bashrc PATH
-  blockinfile:
+  ansible.builtin.blockinfile:
     dest: '{{ node_user_home }}/.bashrc'
     block: |
       export PATH="$PATH:{{ cosmovisor_home }}/current/bin"
     marker: '# {mark} ANSIBLE MANAGED BLOCK - CHAIN PATH'
     insertbefore: EOF
-    create: yes
+    create: true
 
 - name: Add cosmovisor parmeters to .bashrc file for easy usage
-  blockinfile:
+  ansible.builtin.blockinfile:
     dest: "{{ node_user_home }}/.bashrc"
     block: |
-      export DAEMON_NAME={{chain_binary_name}}
+      export DAEMON_NAME={{ chain_binary_name }}
       export DAEMON_HOME={{ chain_home }}
     marker: "# {mark} ANSIBLE MANAGED BLOCK - COSMOVISOR CONFIG VAR"
     insertbefore: EOF
-    create: yes
-
+    create: true
