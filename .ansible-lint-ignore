@@ -7,4 +7,5 @@ roles/server/tasks/main.yml no-changed-when
 roles/server/tasks/main.yml var-naming[no-role-prefix]
 roles/server/tasks/ubunto.yml var-naming[no-role-prefix]
 roles/services/tasks/chain_service.yml risky-file-permissions
-roles/services/tasks/cosmovisor_service.yml risky-file-permissions
+roles/services/tasks/cosmovisor_service.yml risky-file-permissions\
+.github/workflows/ansible-lint.yml yaml[truthy]

@@ -21,5 +21,3 @@ jobs:
       - name: Run ansible-lint
         run: |
           ansible-lint $(git diff --name-only origin/main...$GITHUB_SHA | grep ".yml$")
-
-
