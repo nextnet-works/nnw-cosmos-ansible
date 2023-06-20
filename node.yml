@@ -1,6 +1,7 @@
 ---
 # Configure a chain node
-- hosts: node
+- name: Configure a chain node
+  hosts: node
   roles:
     - {role: user, become: true }
     - {role: server, become: true}

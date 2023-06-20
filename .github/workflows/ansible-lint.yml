@@ -1,0 +1,23 @@
+name: Ansible Lint
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ansible_lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          pip install ansible ansible-lint
+
+      - name: Run ansible-lint
+        run: |
+          ansible-lint $(git diff --name-only origin/main...$GITHUB_SHA | grep ".yml$")

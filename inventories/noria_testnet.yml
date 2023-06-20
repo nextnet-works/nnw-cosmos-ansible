@@ -2,7 +2,7 @@
 all:
   vars:
     # TODO: decide how and where to declare toml files
-    minimum_gas_prices: "0.0025unoria,0.0025ucrd"
+    minimum_gas_prices: "0.0025ucrd"
     chain_denom: "unoria"
     genesis_json_url: "https://raw.githubusercontent.com/noria-net/noria/main/genesis.json"
     persistent_peers: "c166422d24413f0661b006af29f7545890a9a1f0@54.173.208.94:26656"
@@ -16,7 +16,7 @@ all:
     chain_home_clear: false
     node_unsafe_reset: false
     node_service_name: "noriad"
-    chain_version: v1.0.0
+    chain_version: v1.2.1
     # default configuration
     cosmovisor_service_name: "cosmovisor"
     cosmovisor_skip_backup: false

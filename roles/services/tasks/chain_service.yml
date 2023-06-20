@@ -1,31 +1,30 @@
-
-- name: configure systemd service for chain_restart
+---
+- name: Configure systemd service for chain_restart
   when: not use_cosmovisor
-  template:
+  ansible.builtin.template:
     src: chain.service.j2
-    dest: "/etc/systemd/system/{{node_service_name}}.service"
+    dest: "/etc/systemd/system/{{ node_service_name }}.service"
 
 - name: Restart journalctl so that the logs may flow
-  systemd:
+  ansible.builtin.systemd:
     state: restarted
     name: systemd-journald
 
 - name: Enable chain systemd service
   when: not use_cosmovisor
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: true
     state: stopped
     enabled: true
-    name: "{{node_service_name}}"
+    name: "{{ node_service_name }}"
 
 - name: Start chain systemd service
   when: (not use_cosmovisor) and (not reboot | default(false) | bool)
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: true
     state: restarted
     enabled: true
-    name: "{{node_service_name}}"
+    name: "{{ node_service_name }}"
   tags:
     - chain_start
     - chain_restart
-

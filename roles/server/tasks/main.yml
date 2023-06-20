@@ -1,44 +1,40 @@
----
 - name: Populate service facts
-  service_facts:
+  ansible.builtin.service_facts:
   tags:
     - chain_stop
     - chain_restart
 
-# maybe just change the permissive based on system and update in another task.
 - name: Configure the server for debian family (unubtu)
+  ansible.builtin.import_tasks: ubunto.yml
   when: ansible_facts['os_family'] == "Debian"
-  import_tasks: ubunto.yml
 
 - name: Configure the server for radhat family (centos)
+  ansible.builtin.import_tasks: centos.yml
   when: ansible_facts['os_family'] == "RedHat"
-  import_tasks: centos.yml
-
 
 - name: Check golang version
-  shell: |
+  ansible.builtin.shell: |
     PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     go version
   register: go_current_version
   ignore_errors: true
 
 - name: Debug output
-  debug:
-    var:  go_current_version
+  ansible.builtin.debug:
+    var: go_current_version
 
 - name: Extract golang
-  when: go_current_version.rc != 0
-  unarchive:
-    src: "https://golang.org/dl/go{{go_version}}.{{go_arch}}.tar.gz"
+  ansible.builtin.unarchive:
+    src: "https://golang.org/dl/go{{ go_version }}.{{ go_arch }}.tar.gz"
     dest: /usr/local
-    remote_src: yes
+    remote_src: true
+  when: go_current_version.rc != 0
 
 - name: Export path to include go in bashrc file
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: "~/.bashrc"
     block: |
       export GOROOT=/usr/local/go
       export GOPATH=$HOME/go
       export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
     marker: "# {mark} ANSIBLE MANAGED BLOCK GOPATH"
-

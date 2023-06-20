@@ -1,6 +1,6 @@
 ---
 - name: Install system required packages
-  package:
+  ansible.builtin.package:
     name:
       - acl
       - python3
@@ -15,7 +15,7 @@
     state: present
 
 - name: Upgrade the system
-  apt:
+  ansible.builtin.apt:
     update_cache: true
     upgrade: dist
   register: apt_cache
@@ -24,8 +24,6 @@
   until: apt_cache is success
 # TODO: move this to the user, does'nt need to be with root
 - name: Install jq on Ubuntu
-  apt:
+  ansible.builtin.apt:
     pkg:
       - jq
-
-

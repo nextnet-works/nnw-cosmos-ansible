@@ -1,16 +1,16 @@
 ---
 chain_repo_dir: "{{ node_user_home }}/chain-repo"
-chain_bin: "{{ node_user_home }}/go/bin/{{chain_binary_name}}"
-chain_moniker: "{{ node_user}}_node"
-validator_moniker: "{{node_user}}_vali"
+chain_bin: "{{ node_user_home }}/go/bin/{{ chain_binary_name }}"
+chain_moniker: "{{ node_user }}_node"
+validator_moniker: "{{ node_user }}_vali"
 # default configuration
 cosmovisor_version: v1.0.0
 cosmovisor_repository: github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor
-cosmovisor_bin: "{{node_user_home}}/go/bin/cosmovisor"
+cosmovisor_bin: "{{ node_user_home }}/go/bin/cosmovisor"
 cosmovisor_home: "{{ chain_home }}/cosmovisor"
 
-node_user_home: "/home/{{node_user}}"
-chain_home: "{{node_user_home}}/{{ chain_folder_name }}"
+node_user_home: "/home/{{ node_user }}"
+chain_home: "{{ node_user_home }}/{{ chain_folder_name }}"
 # app.toml
 minimum_gas_prices: '0.0025{{ chain_denom }}'
 pruning: default
@@ -56,14 +56,14 @@ grpc_port: 9090
 grpc_web_enabled: true
 grpc_web_port: 9091
 grpc_web_enable_unsafe_cors: false
-grpc_address: 0.0.0.0:{{grpc_web_prot}}
+grpc_address: 0.0.0.0:{{ grpc_web_prot }}
 ## app.toml: State Sync Configuration
 statesync_snapshot_interval: 0
 statesync_snapshot_keep_recent: 2
 
 ## Config.toml
 config_proxy_app: 'tcp://127.0.0.1:26658'
-moniker: "{{node_user }}_node"
+moniker: "{{ node_user }}_node"
 fast_sync: true
 db_backend: "goleveldb"
 db_dir: "data"
@@ -79,9 +79,9 @@ abci: "socket"
 filter_peers: false
 rpc_port: 26657
 rpc_laddr: "tcp://0.0.0.0:{{ rpc_port }}"
-rpc_cors_allowed_origins:  []
-rpc_cors_allowed_methods: ["HEAD", "GET", "POST", ]
-rpc_cors_allowed_headers: ["Origin", "Accept", "Content-Type", "X-Requested-With", "X-Server-Time", ]
+rpc_cors_allowed_origins: []
+rpc_cors_allowed_methods: ["HEAD", "GET", "POST"]
+rpc_cors_allowed_headers: ["Origin", "Accept", "Content-Type", "X-Requested-With", "X-Server-Time"]
 grpc_laddr: ""
 grpc_max_open_connections: 900
 rpc_unsafe: false
@@ -99,7 +99,7 @@ rpc_tls_key_file: ""
 rpc_pprof_laddr: "localhost:6060"
 # p2p configurataion
 p2p_port: 26656
-p2p_laddr: "tcp://0.0.0.0:{{p2p_port}}"
+p2p_laddr: "tcp://0.0.0.0:{{ p2p_port }}"
 p2p_external_address: ""
 p2p_seeds: ""
 p2p_persistent_peers: "5dc187550a021298f88c3e5905c7dbdd790ff040@167.99.177.244:26656"
@@ -156,7 +156,7 @@ consensus_timeout_precommit: "1s"
 consensus_timeout_precommit_delta: "500ms"
 consensus_double_sign_check_height: 0
 consensus_skip_timeout_commit: false
-consensus_create_empty_blocks:  true
+consensus_create_empty_blocks: true
 consensus_create_empty_blocks_interval: "0s"
 consensus_peer_gossip_sleep_duration: "100ms"
 consensus_peer_query_maj23_sleep_duration: "2s"
@@ -174,5 +174,5 @@ instrumentation_namespace: "tendermint"
 client_chain_id: "oasis-2"
 client_keyring_backend: "test"
 client_output_format: "text"
-client_rpc_interface: "tcp://localhost:{{ rpc_port}}"
+client_rpc_interface: "tcp://localhost:{{ rpc_port }}"
 client_broadcast_mode: "sync"

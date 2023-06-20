@@ -1,0 +1,11 @@
+roles/node/tasks/base.yml no-changed-when
+roles/node/tasks/base.yml risky-file-permissions
+roles/node/tasks/base.yml ignore-errors
+roles/node/tasks/base.yml var-naming[no-role-prefix]
+roles/node/tasks/config_public.yml risky-file-permissions
+roles/server/tasks/main.yml no-changed-when
+roles/server/tasks/main.yml var-naming[no-role-prefix]
+roles/server/tasks/ubunto.yml var-naming[no-role-prefix]
+roles/services/tasks/chain_service.yml risky-file-permissions
+roles/services/tasks/cosmovisor_service.yml risky-file-permissions
+.github/workflows/ansible-lint.yml yaml[truthy]
