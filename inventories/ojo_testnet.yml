@@ -9,7 +9,7 @@ all:
     node_user: ojod
     use_cosmovisor: true
     # general settings
-    snapshot_rpc: 
+    snapshot_rpc: "https://ojo-testnet-rpc.polkachu.com:443"
     chain_folder_name: ".ojo"
     chain_binary_name: ojod
     chain_repository: https://github.com/ojo-network/ojo.git
