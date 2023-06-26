@@ -1,0 +1,33 @@
+---
+all:
+  vars:
+    # TODO: decide how and where to declare toml files
+    minimum_gas_prices: "0ustars"
+    persistent_peers: "c603510c159237e1411ade995f89bda41df7f3a1@65.109.93.44:13756"
+    chain_denom: "ustars"
+    genesis_json_url: "https://raw.githubusercontent.com/lavanet/lava-config/main/testnet-1/genesis_json/genesis.json"
+    node_user: stargaze
+    use_cosmovisor: true
+    # general settings
+    snapshot_rpc: "https://stargaze-rpc.polkachu.com:443"
+    chain_folder_name: ".starsd"
+    chain_binary_name: starsd
+    chain_repository: "https://github.com/public-awesome/stargaze"
+    chain_home_clear: false
+    node_unsafe_reset: false
+    node_service_name: "stard"
+    chain_version: v9.1.0
+    # default configuration
+    cosmovisor_service_name: "stargaze"
+    cosmovisor_skip_backup: false
+    chain_id: "stargaze-1"
+    # go configuration
+    go_arch: "{{binary_arch_map[ansible_architecture]}}"
+    go_version: 1.20.4
+    binary_arch_map:
+      aarch64: "linux-arm64"
+      x86_64: "linux-amd64"
+
+  children:
+    node:
+      hosts: "{{ target }}"

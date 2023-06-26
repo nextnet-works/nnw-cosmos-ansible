@@ -1,0 +1,33 @@
+---
+all:
+  vars:
+    # TODO: decide how and where to declare toml files
+    minimum_gas_prices: "0uojo"
+    persistent_peers: ""
+    chain_denom: "uojo"
+    genesis_json_url: "https://rpc.devnet-n0.ojo-devnet.node.ojo.network/genesis"
+    node_user: ojod
+    use_cosmovisor: true
+    # general settings
+    snapshot_rpc: "https://ojo-testnet-rpc.polkachu.com:443"
+    chain_folder_name: ".ojo"
+    chain_binary_name: ojod
+    chain_repository: https://github.com/ojo-network/ojo.git
+    chain_home_clear: false
+    node_unsafe_reset: false
+    node_service_name: "ojod"
+    chain_version: v0.1.4
+    # default configuration
+    cosmovisor_service_name: "cosmovisor"
+    cosmovisor_skip_backup: true
+    chain_id: "ojo-devnet"
+    # go configuration
+    go_arch: "{{binary_arch_map[ansible_architecture]}}"
+    go_version: 1.20.4
+    binary_arch_map:
+      aarch64: "linux-arm64"
+      x86_64: "linux-amd64"
+
+  children:
+    node:
+      hosts: "{{ target }}"

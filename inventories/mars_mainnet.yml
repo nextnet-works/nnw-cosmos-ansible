@@ -1,0 +1,29 @@
+---
+all:
+  vars:
+    genesis_json_url: "https://snapshots.polkachu.com/genesis/mars/genesis.json"
+    persistent_peers: "e61f11c5b03400d3a99c066f951ed0888a2b64af@65.108.238.103:18556,7e7c7d5d1f6f0875b30c13b1e2a867363a28f33b@65.108.237.88:26659"
+    chain_folder_name: .mars
+    snapshot_rpc: "https://mars-rpc.polkachu.com:443"
+    node_user: mars
+    use_cosmovisor: true
+    # general settings
+    chain_binary_name: mars
+    chain_repository: "https://github.com/mars-protocol/hub"
+    node_service_name: "marsd"
+    chain_denom: umars
+    chain_version: v1.0.1
+    # default configuration
+    cosmovisor_service_name: "cosmovisor"
+    cosmovisor_skip_backup: false
+    chain_id: "mars-1"
+    # go configuration
+    go_arch: "{{binary_arch_map[ansible_architecture]}}"
+    go_version: 1.19
+    binary_arch_map:
+      aarch64: "linux-arm64"
+      x86_64: "linux-amd64"
+
+  children:
+    node:
+      hosts: "{{ target }}"
